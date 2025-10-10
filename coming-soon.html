@@ -177,6 +177,68 @@
             .features {
                 grid-template-columns: 1fr;
             }
+
+            .countdown-timer {
+                gap: 10px;
+            }
+
+            .time-unit {
+                min-width: 70px;
+                padding: 15px 10px;
+            }
+
+            .time-number {
+                font-size: 2rem;
+            }
+
+            .time-separator {
+                font-size: 1.5rem;
+            }
+
+            .notify-form {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .notify-form input {
+                min-width: 100%;
+            }
+
+            .notify-section {
+                padding: 20px;
+                margin: 30px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .countdown-timer {
+                gap: 8px;
+            }
+
+            .time-unit {
+                min-width: 60px;
+                padding: 12px 8px;
+            }
+
+            .time-number {
+                font-size: 1.5rem;
+            }
+
+            .time-label {
+                font-size: 0.8rem;
+            }
+
+            .time-separator {
+                font-size: 1.2rem;
+            }
+
+            .notify-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .notify-section p {
+                font-size: 0.9rem;
+            }
         }
 
         /* Animations */
@@ -206,6 +268,180 @@
         .tagline {
             animation: fadeInUp 0.6s ease-out 0.3s both;
         }
+
+        /* Countdown Timer Styles */
+        .countdown-container {
+            margin: 40px 0;
+            animation: fadeInUp 2.4s ease-out 1.2s both;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            text-align: center;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px 15px;
+            min-width: 80px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .time-unit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.3);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+
+        .time-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffc107 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 8px;
+            animation: numberPulse 2s ease-in-out infinite;
+        }
+
+        .time-label {
+            font-size: 0.9rem;
+            color: #cccccc;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .time-separator {
+            font-size: 2rem;
+            color: #ffd700;
+            font-weight: 800;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes numberPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* Notify Me Section */
+        .notify-section {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 2.6s ease-out 1.5s both;
+        }
+
+        .notify-section h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .notify-section p {
+            color: #cccccc;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        .notify-form {
+            display: flex;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .notify-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .notify-form input:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .notify-form input::placeholder {
+            color: #888888;
+        }
+
+        .notify-form button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffc107 100%);
+            color: #000000;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            min-width: 120px;
+        }
+
+        .notify-form button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            background: linear-gradient(135deg, #ffed4e 0%, #ffd700 50%, #ffb300 100%);
+        }
+
+        .notify-form button:active {
+            transform: translateY(-1px);
+        }
+
+        .subscribe-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .subscribe-message.success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            opacity: 1;
+        }
+
+        .subscribe-message.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -217,6 +453,31 @@
         
         <div class="coming-soon">🚀 Coming Soon</div>
         
+        <!-- Countdown Timer -->
+        <div class="countdown-container">
+            <div class="countdown-timer">
+                <div class="time-unit">
+                    <div class="time-number" id="days">60</div>
+                    <div class="time-label">أيام</div>
+                </div>
+                <div class="time-separator">:</div>
+                <div class="time-unit">
+                    <div class="time-number" id="hours">00</div>
+                    <div class="time-label">ساعات</div>
+                </div>
+                <div class="time-separator">:</div>
+                <div class="time-unit">
+                    <div class="time-number" id="minutes">00</div>
+                    <div class="time-label">دقائق</div>
+                </div>
+                <div class="time-separator">:</div>
+                <div class="time-unit">
+                    <div class="time-number" id="seconds">00</div>
+                    <div class="time-label">ثواني</div>
+                </div>
+            </div>
+        </div>
+
         <p class="description">
             CodeHub is a digital marketplace for game codes and gift cards. 
             We provide instant delivery of digital codes for Steam, PlayStation, Xbox, Google Play, and more.
@@ -245,6 +506,17 @@
             <span>Payments are processed securely via Stripe</span>
         </div>
 
+        <!-- Notify Me Section -->
+        <div class="notify-section">
+            <h3>🔔 كن أول من يعلم بالإطلاق</h3>
+            <p>احصل على إشعار فور إطلاق CodeHub</p>
+            <div class="notify-form">
+                <input type="email" id="emailInput" placeholder="أدخل بريدك الإلكتروني" required>
+                <button type="button" id="notifyBtn" onclick="subscribeEmail()">Notify Me</button>
+            </div>
+            <div id="subscribeMessage" class="subscribe-message"></div>
+        </div>
+
         <div class="contact">
             <h3>📧 Contact Us</h3>
             <p>For inquiries and support:</p>
@@ -255,6 +527,100 @@
             <p>&copy; 2024 CodeHub. All rights reserved.</p>
             <p>Every Code. One Hub.</p>
         </div>
-    </div>
-</body>
-</html>
+     </div>
+
+     <script>
+         // Set launch date (60 days from now)
+         const launchDate = new Date();
+         launchDate.setDate(launchDate.getDate() + 60);
+
+         function updateCountdown() {
+             const now = new Date().getTime();
+             const distance = launchDate.getTime() - now;
+
+             if (distance < 0) {
+                 document.getElementById('days').textContent = '00';
+                 document.getElementById('hours').textContent = '00';
+                 document.getElementById('minutes').textContent = '00';
+                 document.getElementById('seconds').textContent = '00';
+                 return;
+             }
+
+             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+             document.getElementById('days').textContent = days.toString().padStart(2, '0');
+             document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+             document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+         }
+
+         // Update countdown every second
+         updateCountdown();
+         setInterval(updateCountdown, 1000);
+
+         // Email subscription function
+         function subscribeEmail() {
+             const emailInput = document.getElementById('emailInput');
+             const notifyBtn = document.getElementById('notifyBtn');
+             const message = document.getElementById('subscribeMessage');
+             const email = emailInput.value.trim();
+
+             // Simple email validation
+             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+             
+             if (!email) {
+                 showMessage('يرجى إدخال بريدك الإلكتروني', 'error');
+                 return;
+             }
+
+             if (!emailRegex.test(email)) {
+                 showMessage('يرجى إدخال بريد إلكتروني صحيح', 'error');
+                 return;
+             }
+
+             // Disable button and show loading
+             notifyBtn.disabled = true;
+             notifyBtn.textContent = 'جاري الإرسال...';
+
+             // Simulate API call (replace with actual implementation)
+             setTimeout(() => {
+                 // Store email in localStorage for now (replace with actual backend)
+                 let subscribers = JSON.parse(localStorage.getItem('codehub_subscribers') || '[]');
+                 
+                 if (subscribers.includes(email)) {
+                     showMessage('هذا البريد مسجل مسبقاً!', 'error');
+                 } else {
+                     subscribers.push(email);
+                     localStorage.setItem('codehub_subscribers', JSON.stringify(subscribers));
+                     showMessage('تم التسجيل بنجاح! سنرسل لك إشعار عند الإطلاق 🎉', 'success');
+                     emailInput.value = '';
+                 }
+
+                 // Re-enable button
+                 notifyBtn.disabled = false;
+                 notifyBtn.textContent = 'Notify Me';
+             }, 1500);
+         }
+
+         function showMessage(text, type) {
+             const message = document.getElementById('subscribeMessage');
+             message.textContent = text;
+             message.className = `subscribe-message ${type}`;
+             
+             setTimeout(() => {
+                 message.className = 'subscribe-message';
+             }, 5000);
+         }
+
+         // Allow Enter key to submit
+         document.getElementById('emailInput').addEventListener('keypress', function(e) {
+             if (e.key === 'Enter') {
+                 subscribeEmail();
+             }
+         });
+     </script>
+ </body>
+ </html>
