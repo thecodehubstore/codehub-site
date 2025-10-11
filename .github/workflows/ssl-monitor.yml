@@ -1,0 +1,244 @@
+name: SSL Activation Monitor
+
+on:
+  schedule:
+    # Run every 30 minutes
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    # Allow manual trigger
+
+env:
+  DOMAIN: "codehubstore.shop"
+  EMAIL_TO: "thecodehub.store@gmail.com"
+
+jobs:
+  ssl-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check HTTPS Status
+      id: ssl_check
+      run: |
+        echo "🔍 Checking HTTPS status for ${{ env.DOMAIN }}..."
+        
+        # Check if HTTPS is active (expect 200 status code)
+        HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "https://${{ env.DOMAIN }}" || echo "000")
+        
+        echo "HTTP Status: $HTTP_STATUS"
+        
+        if [ "$HTTP_STATUS" = "200" ]; then
+          echo "✅ HTTPS is active!"
+          echo "ssl_active=true" >> $GITHUB_OUTPUT
+          echo "activation_time=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+        else
+          echo "❌ HTTPS not yet active (Status: $HTTP_STATUS)"
+          echo "ssl_active=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Send SSL Activation Email
+      if: steps.ssl_check.outputs.ssl_active == 'true'
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.MAIL_USERNAME }}
+        password: ${{ secrets.MAIL_PASSWORD }}
+        subject: "✅ CodeHub SSL Certificate Activated!"
+        to: ${{ env.EMAIL_TO }}
+        from: ${{ secrets.MAIL_USERNAME }}
+        html_body: |
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>SSL Certificate Activated</title>
+              <link rel="preconnect" href="https://fonts.googleapis.com">
+              <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+              <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+              <style>
+                  * {
+                      margin: 0;
+                      padding: 0;
+                      box-sizing: border-box;
+                  }
+                  body {
+                      font-family: 'Inter', sans-serif;
+                      background-color: #0d0d0d;
+                      color: #f5c518;
+                      line-height: 1.6;
+                      padding: 0;
+                      margin: 0;
+                  }
+                  .container {
+                      max-width: 600px;
+                      margin: 0 auto;
+                      background-color: #0d0d0d;
+                      border-radius: 12px;
+                      overflow: hidden;
+                      box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+                  }
+                  .header {
+                      background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+                      padding: 40px 30px;
+                      text-align: center;
+                      border-bottom: 2px solid #ffd700;
+                  }
+                  .logo {
+                      font-size: 48px;
+                      margin-bottom: 20px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      gap: 8px;
+                  }
+                  .logo-circle {
+                      width: 60px;
+                      height: 60px;
+                      background: linear-gradient(135deg, #ffd700 0%, #f5c518 100%);
+                      border-radius: 50%;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 24px;
+                      font-weight: bold;
+                      color: #0d0d0d;
+                      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+                  }
+                  .brand-name {
+                      font-size: 32px;
+                      font-weight: 700;
+                      background: linear-gradient(135deg, #ffd700 0%, #f5c518 100%);
+                      -webkit-background-clip: text;
+                      -webkit-text-fill-color: transparent;
+                      background-clip: text;
+                      margin-left: 15px;
+                  }
+                  .title {
+                      font-size: 28px;
+                      font-weight: 600;
+                      color: #ffd700;
+                      margin-bottom: 10px;
+                  }
+                  .content {
+                      padding: 40px 30px;
+                      text-align: center;
+                  }
+                  .message {
+                      font-size: 18px;
+                      color: #f5c518;
+                      margin-bottom: 30px;
+                      line-height: 1.8;
+                  }
+                  .website-link {
+                      color: #ffd700;
+                      text-decoration: none;
+                      font-weight: 600;
+                      background: rgba(255, 215, 0, 0.1);
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      border: 1px solid rgba(255, 215, 0, 0.3);
+                  }
+                  .activation-time {
+                      background: rgba(255, 215, 0, 0.1);
+                      border: 1px solid rgba(255, 215, 0, 0.3);
+                      border-radius: 8px;
+                      padding: 20px;
+                      margin: 30px 0;
+                      font-size: 16px;
+                      color: #ffd700;
+                  }
+                  .divider {
+                      height: 3px;
+                      background: linear-gradient(90deg, transparent 0%, #ffd700 50%, transparent 100%);
+                      margin: 40px 0;
+                      border-radius: 2px;
+                  }
+                  .footer {
+                      background: #1a1a1a;
+                      padding: 30px;
+                      text-align: center;
+                      border-top: 1px solid rgba(255, 215, 0, 0.2);
+                  }
+                  .footer p {
+                      color: #888;
+                      font-size: 14px;
+                      margin: 0;
+                  }
+                  .security-badge {
+                      display: inline-flex;
+                      align-items: center;
+                      gap: 8px;
+                      background: rgba(255, 215, 0, 0.1);
+                      border: 1px solid rgba(255, 215, 0, 0.3);
+                      border-radius: 25px;
+                      padding: 12px 20px;
+                      margin: 20px 0;
+                      font-size: 16px;
+                      color: #ffd700;
+                      font-weight: 500;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <div class="header">
+                      <div class="logo">
+                          <div class="logo-circle">🟡</div>
+                          <div class="brand-name">CodeHub</div>
+                      </div>
+                      <h1 class="title">SSL Certificate Activated!</h1>
+                  </div>
+                  
+                  <div class="content">
+                      <p class="message">
+                          🎉 Great news! Your CodeHub website 
+                          <a href="https://${{ env.DOMAIN }}" class="website-link">https://${{ env.DOMAIN }}</a>
+                          is now secure with HTTPS 🔒
+                      </p>
+                      
+                      <div class="security-badge">
+                          🛡️ SSL Certificate Successfully Activated
+                      </div>
+                      
+                      <div class="activation-time">
+                          <strong>Activation Time:</strong><br>
+                          ${{ steps.ssl_check.outputs.activation_time }}
+                      </div>
+                      
+                      <div class="divider"></div>
+                      
+                      <p class="message">
+                          Your website is now ready to accept secure connections and process payments safely through Stripe.
+                      </p>
+                  </div>
+                  
+                  <div class="footer">
+                      <p>© 2025 CodeHub. All rights reserved.</p>
+                  </div>
+              </div>
+          </body>
+          </html>
+
+    - name: Stop Workflow After Success
+      if: steps.ssl_check.outputs.ssl_active == 'true'
+      run: |
+        echo "🎉 SSL Certificate activated and notification sent!"
+        echo "🛑 Stopping future runs of this workflow..."
+        
+        # Create a flag file to indicate SSL is active
+        mkdir -p .ssl-status
+        echo "SSL_ACTIVATED_ON=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" > .ssl-status/activation.txt
+        
+        # Disable the workflow by updating the YAML (this requires a commit)
+        echo "⚠️  To completely stop this workflow, disable it manually in GitHub Actions settings"
+        echo "or remove the cron schedule from the workflow file."
+
+    - name: Commit SSL Status (if activated)
+      if: steps.ssl_check.outputs.ssl_active == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .ssl-status/ || true
+        git commit -m "🔒 SSL Certificate activated for ${{ env.DOMAIN }}" || true
+        git push || true
